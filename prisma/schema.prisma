@@ -13,4 +13,12 @@ model User {
   status  Boolean @default(true)
   name    String
   email   String  @unique
+  Post Post[]
+}
+
+model Post {
+  id      Int @id @default(autoincrement())
+  title   String
+  userId  Int
+  author User @relation(fields: [userId], references: [id])
 }
