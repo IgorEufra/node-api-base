@@ -22,13 +22,17 @@ model User {
   name      String
   email     String    @unique
   Post Post[]
+
+  @@map("users")
 }
 
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
-  subtitle  String? // O ? indica que será opcional
+  subtitle  String? @map("sub_title") // O ? indica que será opcional
   body      String
   userId    Int
   author    User    @relation(fields: [userId], references: [id])
+  
+  @@map("posts")
 }
