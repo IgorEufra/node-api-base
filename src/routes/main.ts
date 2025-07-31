@@ -12,8 +12,14 @@ mainRouter.post('/user', async (req, res) => {
     // Validar os dados recebidos:
 
     const user = await createUser({
-        name: 'Teste 1',
-        email: 'teste1@email.com'
+        name: 'Teste 2',
+        email: 'teste2@email.com',
+        Post: {
+            create: {
+                title: 'Título de teste do testador 2',
+                body: 'Corpo de teste'
+            }
+        }
     });
     if (user) {
         res.status(201).json({ user });
