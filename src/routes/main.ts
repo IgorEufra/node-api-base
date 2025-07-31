@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, createUsers, getAllUsers, getByEndsWith, getByStartsWith, getUserByEmail, getUserByName } from '../services/user';
+import { createUser, createUsers, getAllUsers, getByEndsWith, getByPost, getByStartsWith, getUserByEmail, getUserByName, getWithNone, listByEmail } from '../services/user';
 
 
 export const mainRouter = Router();
@@ -57,7 +57,23 @@ mainRouter.get("/user", async (req, res) => {
     res.json({ result })
 })
 
+mainRouter.get("/listByEmail", async (req, res) => {
+    const result = await listByEmail('@email.com');
+    res.json({ result })
+})
+
 mainRouter.get("/name", async (req, res) => {
     const result = await getUserByName('Sicrano');
+    res.json({ result })
+})
+
+mainRouter.get("/posts", async (req, res) => {
+    const result = await getByPost();
+    res.json({ result })
+})
+
+
+mainRouter.get("/withNone", async (req, res) => {
+    const result = await getWithNone();
     res.json({ result })
 })
