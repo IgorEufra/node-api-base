@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, createUsers } from '../services/user';
+import { createUser, createUsers, getAllUsers, getByEndsWith, getByStartsWith, getUserByEmail, getUserByName } from '../services/user';
 
 
 export const mainRouter = Router();
@@ -35,4 +35,29 @@ mainRouter.post ("/users", async (req, res) => {
             { name: 'Sicrano', email: 'sicrano@email.com' }
         ]);
     res.json({ result });
+})
+
+mainRouter.get("/users", async (req, res) => {
+    const result = await getAllUsers();
+    res.json({ result });
+})
+
+mainRouter.get("/startsWith", async (req, res) => {
+    const result = await getByStartsWith();
+    res.json({ result });
+})
+
+mainRouter.get("/endsWith", async (req, res) => {
+    const result = await getByEndsWith();
+    res.json({ result });
+})
+
+mainRouter.get("/user", async (req, res) => {
+    const result = await getUserByEmail('sicrano@email.com');
+    res.json({ result })
+})
+
+mainRouter.get("/name", async (req, res) => {
+    const result = await getUserByName('Sicrano');
+    res.json({ result })
 })
