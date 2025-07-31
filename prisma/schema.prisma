@@ -32,7 +32,7 @@ model Post {
   subtitle  String? @map("sub_title") // O ? indica que será opcional
   body      String
   userId    Int
-  author    User    @relation(fields: [userId], references: [id])
+  author    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@map("posts")
 }

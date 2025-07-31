@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../services/user';
+import { createUser, createUsers } from '../services/user';
 
 
 export const mainRouter = Router();
@@ -20,4 +20,13 @@ mainRouter.post('/user', async (req, res) => {
     } else {
         res.status(500).json({ error: `Ocorreu um erro` })
     }
+})
+
+mainRouter.post ("/users", async (req, res) => {
+    const result = await createUsers([
+            { name: 'José das Couves', email: 'josedascouves@email.com' },
+            { name: 'Fulano', email: 'fulano@email.com' },
+            { name: 'Sicrano', email: 'sicrano@email.com' }
+        ]);
+    res.json({ result });
 })

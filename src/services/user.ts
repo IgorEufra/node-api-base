@@ -10,13 +10,14 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
 }
 
 export const createUsers = async (users: Prisma.UserCreateInput[]) => {
-    const result = await prisma.user.createMany({
-        data: [
-            {name: 'José das Couves', email: 'josedascouves@email.com' },
-            { name: 'Fulano', email: 'fulano@email.com' },
-            { name: 'Sicrano', email: 'sicrano@email.com' }
-        ],
-        // Identifica os campos unique duplicados - 'pula' os duplicados
-        skipDuplicates: true
-    });
+    try {
+        return await prisma.user.createMany({
+            // No cliente ele ja retorna o count:X pela propria propriedade do createMany
+            data: users,
+            // Identifica os campos unique duplicados - 'pula' os duplicados
+            skipDuplicates: true
+        });
+    } catch (error) {
+        return false;
+    }
 }
