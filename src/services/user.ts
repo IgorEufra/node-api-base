@@ -28,7 +28,23 @@ export const getAllUsers = async () => {
             id: true,
             name: true,
             email: true,
-            status: true
+            status: true,
+            // _count faz a contagem
+            _count: {
+                select: {
+                    Post: true
+                }
+            },
+            // Colocando Post ele lista o que eu quero de Post
+            // Colocando true ele retorna todos os dados
+            Post: {
+                // Só retorna os que possuem posts
+                where: {},
+                select: {
+                    id: true,
+                    title: true
+                }
+            }
         }
     });
     return users;
@@ -102,7 +118,7 @@ export const listByEmail = async (email: string) => {
         select: {
             id: true,
             name: true,
-            email:true
+            email: true
         }
     });
     return user;
@@ -125,9 +141,9 @@ export const getByPost = async () => {
     const users = await prisma.user.findMany({
         where: {
             Post: {
-                some:{
+                some: {
                     title: {
-                        startsWith: 'Titulo'                        
+                        startsWith: 'Titulo'
                     }
                 }
             }
@@ -135,7 +151,7 @@ export const getByPost = async () => {
         select: {
             id: true,
             name: true,
-            email:true,
+            email: true,
             status: true
         }
     });
@@ -148,13 +164,13 @@ export const getWithNone = async () => {
         where: {
             Post: {
                 // Que tenha pelo menos 1 post...
-                some:{
-                    
+                some: {
+
                 },
                 // Que nenhum desses posts tenha o título começado com Rodapé
-                none:{
+                none: {
                     title: {
-                        startsWith: 'Rodapé'                        
+                        startsWith: 'Rodapé'
                     }
                 }
             }
@@ -162,7 +178,7 @@ export const getWithNone = async () => {
         select: {
             id: true,
             name: true,
-            email:true,
+            email: true,
             status: true
         }
     });
