@@ -21,31 +21,28 @@ export const createUsers = async (users: Prisma.UserCreateInput[]) => {
         return false;
     }
 }
-
 export const getAllUsers = async () => {
+    let page = 0;
+
+    let skip = page * 2;
+
     const users = await prisma.user.findMany({
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            status: true,
-            // _count faz a contagem
-            _count: {
-                select: {
-                    Post: true
-                }
-            },
-            // Colocando Post ele lista o que eu quero de Post
-            // Colocando true ele retorna todos os dados
-            Post: {
-                // Só retorna os que possuem posts
-                where: {},
-                select: {
-                    id: true,
-                    title: true
-                }
-            }
-        }
+        orderBy: [
+            {name:'asc'},
+            {id:'desc'}
+        ]
+    });
+    return users;
+}
+
+export const getAllUsersByPage = async () => {
+    let page = 0;
+
+    let skip = page * 2;
+
+    const users = await prisma.user.findMany({
+        skip: skip,
+        take: 2
     });
     return users;
 }
@@ -54,7 +51,7 @@ export const getByStartsWith = async () => {
     const users = await prisma.user.findMany({
         where: {
             name: {
-                // É case insensitive (tanto faz se maiúscula ou minúscula)
+                // Case insensitive
                 startsWith: 's'
             }
         },
@@ -72,7 +69,6 @@ export const getByEndsWith = async () => {
     const users = await prisma.user.findMany({
         where: {
             name: {
-                // É case insensitive (tanto faz se maiúscula ou minúscula)
                 endsWith: 'o'
             }
         },
@@ -183,4 +179,30 @@ export const getWithNone = async () => {
         }
     });
     return users;
+}
+
+export const updateUser = async () => {
+    const updatedUser = await prisma.user.update({
+        where:{
+            email: 'sicrano@email.com'
+        },
+        data:{
+            role:'ADMIN'
+        }
+    });
+    return updatedUser;
+}
+
+export const updateUsers = async () => {
+    const updateUsers = await prisma.user.updateMany({
+        where: {
+            email:{
+                endsWith: '@hotmail.com'
+            }
+        },
+        data: {
+            status: false
+        }
+    });
+    return updateUsers;
 }
