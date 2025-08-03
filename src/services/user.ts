@@ -2,11 +2,21 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "../libs/prisma"
 
 export const createUser = async (data: Prisma.UserCreateInput) => {
-    try {
-        return await prisma.user.create({ data });
-    } catch (error) {
-        return false;
-    }
+    const result = await prisma.user.upsert({
+        where: {
+            email: data.email
+        },
+        update: { // Se eu deixo o update vazio ele só retorna o usuário selecionado no main
+            // role: 'ADMIN'
+        },
+        create: data
+    });
+    return result;
+    // try {
+    //     return await prisma.user.create({ data });
+    // } catch (error) {
+    //     return false;
+    // }
 }
 
 export const createUsers = async (users: Prisma.UserCreateInput[]) => {
@@ -28,8 +38,8 @@ export const getAllUsers = async () => {
 
     const users = await prisma.user.findMany({
         orderBy: [
-            {name:'asc'},
-            {id:'desc'}
+            { name: 'asc' },
+            { id: 'desc' }
         ]
     });
     return users;
@@ -183,11 +193,11 @@ export const getWithNone = async () => {
 
 export const updateUser = async () => {
     const updatedUser = await prisma.user.update({
-        where:{
+        where: {
             email: 'sicrano@email.com'
         },
-        data:{
-            role:'ADMIN'
+        data: {
+            role: 'ADMIN'
         }
     });
     return updatedUser;
@@ -196,7 +206,7 @@ export const updateUser = async () => {
 export const updateUsers = async () => {
     const updateUsers = await prisma.user.updateMany({
         where: {
-            email:{
+            email: {
                 endsWith: '@hotmail.com'
             }
         },
@@ -205,4 +215,26 @@ export const updateUsers = async () => {
         }
     });
     return updateUsers;
+}
+
+// Deleta vários usuários de acordo com o WHERE
+export const deleteUsers = async () => {
+    const deleteUsers = await prisma.user.deleteMany({
+        where: {
+            email: {
+                endsWith: '@hotmail.com'
+            }
+        }
+    });
+    return deleteUsers;
+}
+
+
+export const deleteUser = async () => {
+    const deleteUser = await prisma.user.delete({
+        where: {
+            email: 'josedascouves@email.com'
+        }
+    });
+    return deleteUser;
 }

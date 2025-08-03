@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, createUsers, getAllUsers, getAllUsersByPage, getByEndsWith, getByPost, getByStartsWith, getUserByEmail, getUserByName, getWithNone, listByEmail, updateUser, updateUsers } from '../services/user';
+import { createUser, createUsers, deleteUser, deleteUsers, getAllUsers, getAllUsersByPage, getByEndsWith, getByPost, getByStartsWith, getUserByEmail, getUserByName, getWithNone, listByEmail, updateUser, updateUsers } from '../services/user';
 
 
 export const mainRouter = Router();
@@ -14,12 +14,12 @@ mainRouter.post('/user', async (req, res) => {
     const user = await createUser({
         name: 'Teste 2',
         email: 'teste2@email.com',
-        Post: {
-            create: {
-                title: 'Título de teste do testador 2',
-                body: 'Corpo de teste'
-            }
-        }
+        // Post: {
+        //     create: {
+        //         title: 'Título de teste do testador 2',
+        //         body: 'Corpo de teste'
+        //     }
+        // }
     });
     if (user) {
         res.status(201).json({ user });
@@ -28,12 +28,12 @@ mainRouter.post('/user', async (req, res) => {
     }
 })
 
-mainRouter.post ("/users", async (req, res) => {
+mainRouter.post("/users", async (req, res) => {
     const result = await createUsers([
-            { name: 'José das Couves', email: 'josedascouves@email.com' },
-            { name: 'Fulano', email: 'fulano@email.com' },
-            { name: 'Sicrano', email: 'sicrano@email.com' }
-        ]);
+        { name: 'José das Couves', email: 'josedascouves@email.com' },
+        { name: 'Fulano', email: 'fulano@email.com' },
+        { name: 'Sicrano', email: 'sicrano@email.com' }
+    ]);
     res.json({ result });
 })
 
@@ -108,5 +108,17 @@ mainRouter.put('/user', async (req, res) => {
 // Atualizando vários usuários
 mainRouter.put('/users', async (req, res) => {
     const result = await updateUsers();
+    res.json({ result });
+})
+
+// Deletando um usuário
+mainRouter.delete('/user', async (req, res) => {
+    const result = await deleteUser();
+    res.json({ result });
+})
+
+// Deletando vários usuários
+mainRouter.delete('/users', async (req, res) => {
+    const result = await deleteUsers();
     res.json({ result });
 })
